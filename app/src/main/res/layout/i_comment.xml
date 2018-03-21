@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/common_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="25dp"
+            android:layout_height="25dp">
+
+            <ImageView
+                android:id="@+id/img_icomment_userhead"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:background="#ff00ff"
+                android:scaleType="fitXY" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/round_alpha" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_icomment_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="123"
+            android:textColor="@color/text_second"
+            android:textSize="@dimen/common_text" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_icomment_agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:drawableRight="@drawable/icon_agreed"
+            android:text="333333"
+            android:textColor="@color/text_second"
+            android:textSize="@dimen/tip_text" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_icomment_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="33dp"
+        android:text="2017/12/27"
+        android:textColor="@color/text_second"
+        android:textSize="@dimen/tip_text" />
+
+    <TextView
+        android:id="@+id/tv_icomment_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="24dp"
+        android:text="comment  comment"
+        android:textColor="@color/text_dark"
+        android:textSize="@dimen/common_text" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="24dp"
+        android:background="@color/line" />
+
+</LinearLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tip_text">12dp</dimen>
+    <dimen name="common_text">13dp</dimen>
+    <dimen name="tab_text">14dp</dimen>
+    <dimen name="title_text">15dp</dimen>
+    <dimen name="act_text">17dp</dimen>
+    <dimen name="big_text">18dp</dimen>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg">
+    <ImageView
+        android:id="@+id/img_applist_none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/nodata_list"
+        android:scaleType="fitCenter"/>
+    <com.xiaozi.appstore.view.LoadableSwipeLayout
+        android:id="@+id/swipe_applist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_applist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"/>
+    </com.xiaozi.appstore.view.LoadableSwipeLayout>
+</FrameLayout>

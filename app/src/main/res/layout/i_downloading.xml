@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/common_bg"
+    android:minHeight="80dp">
+
+    <FrameLayout
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/icon_dlmgr" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_idl_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="96dp"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:maxLength="13"
+        android:maxLines="1"
+        android:text="name"
+        android:textColor="@color/text_dark"
+        android:textSize="@dimen/title_text" />
+
+    <TextView
+        android:id="@+id/tv_idl_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="96dp"
+        android:maxLines="1"
+        android:text="1KB/s"
+        android:textColor="@color/text_second"
+        android:textSize="@dimen/common_text" />
+
+    <com.fish.fishdownloader.view.FDownloadBar
+        android:id="@+id/download_idl"
+        android:layout_width="62dp"
+        android:layout_height="26dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/line" />
+
+</RelativeLayout>

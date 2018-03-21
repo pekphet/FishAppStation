@@ -1,0 +1,31 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.fish.fishdownloader">
+
+
+    <application>
+        <service
+            android:name="com.fish.downloader.service.DownloadService"
+            android:exported="false"
+            android:process=":download" />
+
+        <service android:name=".service.FishDownloaderSVC"
+            android:exported="false"
+            android:process=":fdownload"/>
+
+        <!--<provider-->
+            <!--android:authorities="com.fish.download.provider"-->
+            <!--android:name=".service.DownloadInfoContentProvider"-->
+            <!--android:exported="false"/>-->
+        
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.puli.appstore.provider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_list"/>
+        </provider>
+
+    </application>
+
+</manifest>

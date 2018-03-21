@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="124dp"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <FrameLayout
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="8dp">
+        <ImageView
+            android:id="@+id/img_ifhome_grid_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/app_icon_alpha"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_ifhome_grid_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/common_text"
+        android:textColor="@color/text_dark"
+        android:layout_marginTop="8dp"/>
+
+    <com.fish.fishdownloader.view.FDownloadBar
+        android:id="@+id/fdownloader_ifhome_grid"
+        android:layout_width="64dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+</LinearLayout>

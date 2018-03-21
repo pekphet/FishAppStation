@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="text_dark">#363636</color>
+    <color name="text_white">#ffffff</color>
+    <color name="text_second">#898989</color>
+    <color name="text_hint">#c8c8c8</color>
+    <color name="text_button">#ff8a02</color>
+
+    <color name="module_title_bg">#eee</color>
+    <color name="common_bg">#fff</color>
+    <color name="cutter">#ebebeb</color>
+    <color name="line">#dedede</color>
+    
+    <color name="button_stroke">#ffb950</color>
+    <color name="button_pg_used">#fde179</color>
+    <color name="button_pg_unused">#fff1ba</color>
+
+    <color name="button_action">#ff3443</color>
+    <color name="dialogWindowBG">#30000000</color>
+
+</resources>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:minHeight="120dp"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/rl_icate_cate"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/img_icate_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/tv_icate_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/img_icate_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="LALALALA"
+            android:textColor="@color/text_dark"
+            android:textSize="@dimen/tab_text" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="1px"
+        android:layout_height="64dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/line" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="top"
+            android:paddingTop="32dp">
+
+            <TextView
+                android:id="@+id/tv_icate1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/tab_text" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="16dp"
+                android:background="@color/line" />
+
+            <TextView
+                android:id="@+id/tv_icate2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/tab_text" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="16dp"
+                android:background="@color/line" />
+
+            <TextView
+                android:id="@+id/tv_icate3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/tab_text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingBottom="32dp">
+
+            <TextView
+                android:id="@+id/tv_icate4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|bottom"
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/tab_text" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="16dp"
+                android:layout_gravity="bottom"
+                android:background="@color/line" />
+
+            <TextView
+                android:id="@+id/tv_icate5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|bottom"
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/tab_text" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="16dp"
+                android:layout_gravity="bottom"
+                android:background="@color/line" />
+
+            <TextView
+                android:id="@+id/tv_icate6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|bottom"
+                android:textColor="@color/text_dark"
+                android:textSize="@dimen/tab_text" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

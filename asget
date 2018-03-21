@@ -1,0 +1,13 @@
+#!/bin/bash
+git clone $1
+# get module name =w=
+moduleTmp=${1##*/}
+moduleName=${moduleTmp%.*}
+#write gradle files =W=
+sed -i "/dependencies/a\\\timplementation project(':$moduleName')" app/build.gradle
+echo -n ", ':$moduleName'" >> settings.gradle
+
+
+
+
+
