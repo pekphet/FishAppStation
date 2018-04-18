@@ -1,4 +1,4 @@
-package com.zy.appstore.wxapi
+package com.fengye.appstore.wxapi
 
 import android.app.Activity
 import android.content.Intent

@@ -9,7 +9,7 @@ import com.xiaozi.appstore.manager.ConfManager
 /**
  * Created by fish on 18-1-2.
  */
-val _DEBUG = true
+val _DEBUG =  false
 
 val _CLIENT_ID = "BK_APP_STORE"
 val _KEY = "DA23JH1238"

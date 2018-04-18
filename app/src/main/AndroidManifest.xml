@@ -65,7 +65,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.zy.appstore.wxapi.WXEntryActivity"
+            android:name="com.fengye.appstore.wxapi.WXEntryActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
 
