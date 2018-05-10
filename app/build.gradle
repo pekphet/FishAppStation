@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.bw.assistant"
+        applicationId "com.lightning.appstore"
         minSdkVersion 17
         targetSdkVersion 26
         versionCode 1000
