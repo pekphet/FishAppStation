@@ -15,4 +15,8 @@ object GlobalData {
     }
 
     fun getAppConfig() = mAppConf
+
+    private val mCallsMap = mutableMapOf<String, DataManager.UrlCalls?>()
+    fun putCalls(pkg: String, calls: DataManager.UrlCalls?) = mCallsMap.put(pkg, calls)
+    fun getCalls(pkg: String) = mCallsMap[pkg]
 }

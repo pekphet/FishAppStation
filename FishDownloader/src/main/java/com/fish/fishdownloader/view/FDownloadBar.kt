@@ -4,7 +4,10 @@ import android.app.Service
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
+import android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 import android.content.ServiceConnection
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
@@ -47,6 +50,7 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
                 flushUI()
             }
         }
+    var mOnStart: () -> Unit = {}
     var mOnProgress: (Double) -> Unit = {}
     var mOnComplete: (String) -> Unit = {}
     var mOnFailed: (String) -> Unit = {}
@@ -148,7 +152,7 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
     /****INITIAL****/
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        Log.e("FDB", "ONATTACHED")
+//        Log.e("FDB", "ONATTACHED")
         cleanView()
     }
 
@@ -187,7 +191,7 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
             }
 
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-                Log.e("remote service", "connected")
+//                Log.e("remote service", "connected")
                 mServiceStub = IFDownloadAction.Stub.asInterface(service)
                 mServiceStub.registerCK(mTag, mCK)
                 mInfoDelay?.run { mServiceStub.initInfo(mTag, first, second, third) }
@@ -210,6 +214,7 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
         }
         mStatus = DownloadStatus.DOWNLOADING
         mServiceStub.startDownload(mTag)
+        mOnStart()
     }
 
     private fun pause() {
@@ -312,6 +317,6 @@ fun FromFileMultiApis(context: Context, f: File): Uri{
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
         return Uri.fromFile(f)
     } else {
-        return FileProvider.getUriForFile(context, context.packageName + ".provider", f).apply { Log.e("URI PARSER", this.toString()) }
+        return FileProvider.getUriForFile(context, "com.xiaozi.appstore.provider", f).apply { Log.e("URI PARSER", this.toString()) }
     }
 }

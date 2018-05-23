@@ -17,6 +17,7 @@ class AppInstallRcv : BroadcastReceiver(){
             if (appPackageName != null) {
                 Framework.Package.addInstalled(appPackageName)
                 NetManager.callInstalledUpload(appPackageName)
+                NetManager.fastCall<String>(GlobalData.getCalls(appPackageName)?.install)
             }
         } else if (Intent.ACTION_PACKAGE_REMOVED == intent?.action) {
             val appPackageName = intent.dataString?.split(":")?.get(1)?.trim()

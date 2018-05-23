@@ -35,12 +35,15 @@ class AppActivity : BaseBarActivity() {
     lateinit var mWaiter: AsyncWaiter
     lateinit var mAdapter: RecyclerView.Adapter<ImageVH>
     lateinit var mAdAdapter: RecyclerView.Adapter<HomeVH>
+    var mCalls: DataManager.UrlCalls? = null
 
     companion object {
         val KEY_APPID = "appID"
-        fun open(ctx: Context, appId: Int) {
+        val KEY_APPCALLS = "appCalls"
+        fun open(ctx: Context, appId: Int, calls: DataManager.UrlCalls?) {
             ctx.startActivity(Intent(ctx, AppActivity::class.java).apply {
                 putExtra(KEY_APPID, appId)
+                putExtra(KEY_APPCALLS, calls)
             })
         }
     }
@@ -53,6 +56,8 @@ class AppActivity : BaseBarActivity() {
 
     private fun initLoader() {
         mWaiter = AsyncWaiter(this)
+        mCalls = intent.getSerializableExtra(KEY_APPCALLS) as? DataManager.UrlCalls
+        NetManager.fastCall<String>(mCalls?.showUrl)
         mLoader = AppDetailPresenterImpl(mWaiter, getAppId()) { mData = it; initView() }
         mAdsLoader = AppAdListPresenterImpl(mWaiter, getAppId()) { mAdData.addAll(it); mAdAdapter.notifyDataSetChanged() }
     }

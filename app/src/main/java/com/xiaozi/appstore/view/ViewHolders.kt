@@ -1,5 +1,6 @@
 package com.xiaozi.appstore.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.support.v7.widget.LinearLayoutManager
@@ -10,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.fish.downloader.view.DownloadBar
 import com.fish.fishdownloader.service.DownloadRecInfo
 import com.fish.fishdownloader.view.FDownloadBar
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -19,9 +19,12 @@ import com.xiaozi.appstore.activity.AppActivity
 import com.xiaozi.appstore.activity.AppListActivity
 import com.xiaozi.appstore.activity.DownloadMgrActivity
 import com.xiaozi.appstore.component.Framework
-import com.xiaozi.appstore.manager.*
+import com.xiaozi.appstore.component.GlobalData
+import com.xiaozi.appstore.manager.AppCondition
+import com.xiaozi.appstore.manager.AppListType
+import com.xiaozi.appstore.manager.DataManager
+import com.xiaozi.appstore.manager.NetManager
 import com.xiaozi.appstore.plugin.ImageLoaderHelper
-import java.io.File
 
 /**
  * Created by fish on 18-1-5.
@@ -39,11 +42,14 @@ class HomeVH(val v: View) : RecyclerView.ViewHolder(v) {
         mTvName.text = app.name
         mTvTip.text = app.tip
         mTvInfo.text = "${Framework.Trans.toWan(app.installCnt)}次安装/${app.size}"
+        NetManager.fastCall<String>(app.calls?.showUrl)
         ImageLoaderHelper.loadImageWithCache(app.icon, mImgIcon)
-        v.setOnClickListener { AppActivity.open(v.context, app.appId) }
+        v.setOnClickListener { AppActivity.open(v.context, app.appId, app.calls) }
         mDL.run {
             bindTag(app.pkg)
             putInfo(app.name, app.dlUrl, app.sizeInt)
+            mOnStart = {NetManager.fastCall<String>(app.calls?.startUrl)}
+            mOnComplete = {NetManager.fastCall<String>(app.calls?.completeUrl)}
         }
     }
 
@@ -70,9 +76,14 @@ class TypedAppListVH(val v: View) : RecyclerView.ViewHolder(v) {
             mTvPos.visibility = View.GONE
         mTvCon.text = app.tip
         ImageLoaderHelper.loadImageWithCache(app.icon, mImgIcon)
-        v.setOnClickListener { AppActivity.open(v.context, app.appId) }
-        mDL.bindTag(app.pkg)
-        mDL.putInfo(app.name, app.dlUrl, app.sizeInt)
+        NetManager.fastCall<String>(app.calls?.showUrl)
+        v.setOnClickListener { AppActivity.open(v.context, app.appId, app.calls) }
+        mDL.run {
+            mOnStart = {NetManager.fastCall<String>(app.calls?.startUrl)}
+            mOnComplete = {NetManager.fastCall<String>(app.calls?.completeUrl)}
+            bindTag(app.pkg)
+            putInfo(app.name, app.dlUrl, app.sizeInt)
+        }
     }
 
     fun release() {
@@ -105,7 +116,7 @@ class CategoryVH(val v: View) : RecyclerView.ViewHolder(v) {
     }
 
     fun release() {
-        for(id in mCateSecIdArray)
+        for (id in mCateSecIdArray)
             v.findViewById<View>(id).visibility = View.INVISIBLE
     }
 }
@@ -146,6 +157,8 @@ class DownloadingVH(private val v: View) : RecyclerView.ViewHolder(v) {
     private val mTvName = v.findViewById<TextView>(R.id.tv_idl_name)
     private val mTvContent = v.findViewById<TextView>(R.id.tv_idl_content)
     val mDownloader = v.findViewById<FDownloadBar>(R.id.download_idl)
+    @SuppressLint("SetTextI18n")
+
     fun load(data: DownloadRecInfo) {
         var mLastPG = 0.0
         var mLastTS = System.currentTimeMillis()
@@ -168,9 +181,9 @@ class DownloadingVH(private val v: View) : RecyclerView.ViewHolder(v) {
                     }.run {
                         Framework.Trans.Size((this * data.size / ((System.currentTimeMillis() - mLastTS) / 1000.0)).toInt())
                     }.also {
-                                mLastPG = pg
-                                mLastTS = System.currentTimeMillis()
-                            }
+                        mLastPG = pg
+                        mLastTS = System.currentTimeMillis()
+                    }
                     }/s"
             }
             mDownloader.mOnComplete = {
@@ -215,24 +228,4 @@ class RecyclerDividerDecor(private val ctx: Context, private val dividerSize: In
 }
 
 
-class HomeGridVH(val v: View) : RecyclerView.ViewHolder(v) {
-    constructor(parent: ViewGroup?) : this(LayoutInflater.from(parent?.context).inflate(R.layout.i_fhome_grid, parent, false))
 
-    val mTvName = v.findViewById<TextView>(R.id.tv_ifhome_grid_name)
-    val mImgIcon = v.findViewById<ImageView>(R.id.img_ifhome_grid_icon)
-    val mDL = v.findViewById<FDownloadBar>(R.id.fdownloader_ifhome_grid)
-
-    fun load(app: DataManager.AppInfo) {
-        mTvName.text = app.name
-        ImageLoaderHelper.loadImageWithCache(app.icon, mImgIcon)
-        v.setOnClickListener { AppActivity.open(v.context, app.appId) }
-        mDL.run {
-            bindTag(app.pkg)
-            putInfo(app.name, app.dlUrl, app.sizeInt)
-        }
-    }
-
-    fun release() {
-        mDL.release()
-    }
-}

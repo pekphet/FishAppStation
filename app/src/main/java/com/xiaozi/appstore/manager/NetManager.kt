@@ -26,7 +26,11 @@ object NetManager {
     private val _PRODUCT_URL = "http://api.yz070.com/v1"
     private val MAIN_URL = if (_DEBUG) _TEST_URL else _PRODUCT_URL
 
-    inline fun <reified T> fastCall(url: String, crossinline success: T.() -> Unit = {}, crossinline failed: String.() -> Unit = {}) = createOri<T>(url, success, failed).get(Framework._C, Framework._H)
+    inline fun <reified T> fastCall(url: String?, crossinline success: T.() -> Unit = {}, crossinline failed: String.() -> Unit = {}) {
+        if (url == null || url.isBlank()) return
+        createOri<T>(url, success, failed).get(Framework._C, Framework._H)
+    }
+
     inline fun <reified T> fastCallBaseResp(url: String, crossinline success: T.() -> Unit = {}, crossinline failed: String.() -> Unit = {}) = createBase(url, success, failed).get(Framework._C, Framework._H)
 
     inline fun <reified T> createBase(url: String, crossinline success: T.() -> Unit, crossinline failed: String.() -> Unit) = RequestHelper<BaseResp<T>?>().apply {
@@ -80,8 +84,7 @@ object NetManager {
             success()
         }) {
             activity?.ZToast(this)
-        }
-                .UrlParam("pkgName", Framework._C.packageName)
+        }.UrlParam("pkgName", Framework._C.packageName)
                 .ResultType(object : TypeToken<BaseResp<RespAppConf>>() {}).get(Framework._C, Framework._H)
     }
 
@@ -230,7 +233,10 @@ data class RespClassSec(val id: Int, val name: String)
 
 data class RespAppListEntity(val node: Array<RespAppListInfo>, val number: Int, val start: Int)
 data class RespAppListInfo(val tips: String, val appName: String, val downloadCount: Long, val iconUrl: String,
-                           val packageName: String, val size: Int, val sn: Int, val appId: Int, val downloadUrl: String)
+                           val packageName: String, val size: Int, val sn: Int, val appId: Int, val downloadUrl: String,
+                           val calls: RespAppListCallUrls?)
+
+data class RespAppListCallUrls(val showUrl: String, val startUrl: String, val completeUrl: String, val installUrl: String) : Serializable
 
 data class RespAppInfoEntity(val adType: String, val appName: String, val commentCount: Int, val appDesc: String,
                              val appId: Int, val downloadUrl: String, val iconUrl: String, val imageUrls: Array<String>,
