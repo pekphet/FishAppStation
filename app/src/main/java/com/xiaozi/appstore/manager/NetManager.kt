@@ -46,6 +46,8 @@ object NetManager {
         UrlParam("imei", Device.getIMEI())
         UrlParam("mac", Device.getMacAddr())
         UrlParam("osVersion", Device.OS_VERSION)
+        UrlParam("ip", Device.getIP())
+        UrlParam("pkgName", Framework._C.packageName)
         HeadPassNullParam("userToken", AccountManager.token())
         ResultType(object : TypeToken<BaseResp<T>>() {})
         Success {
@@ -84,12 +86,11 @@ object NetManager {
             success()
         }) {
             activity?.ZToast(this)
-        }.UrlParam("pkgName", Framework._C.packageName)
-                .ResultType(object : TypeToken<BaseResp<RespAppConf>>() {}).get(Framework._C, Framework._H)
+        }.ResultType(object : TypeToken<BaseResp<RespAppConf>>() {}).get(Framework._C, Framework._H)
     }
 
     fun loadAppList(type: String = AppListType.ALL.str, condition: String, keyword: String = "", index: Int = 0, success: RespAppList.() -> Unit, failed: String.() -> Unit) {
-        createBase<RespAppList>("$MAIN_URL/app/list", success, failed)
+        createBase<RespAppList>("$MAIN_URL/app/wdjlist", success, failed)
                 .Method(RequestHelper.Method.GET)
                 .UrlPassNullParam("adsType", type)
                 .UrlParam("condition", condition)
@@ -140,7 +141,6 @@ object NetManager {
     fun loadBanners(success: RespBanners.() -> Unit, failed: String.() -> Unit) {
         createBase<RespBanners>("$MAIN_URL/ad", success, failed)
                 .Method(RequestHelper.Method.GET)
-                .UrlParam("pkgName", Framework._C.packageName)
                 .ResultType(object : TypeToken<BaseResp<RespBanners>>() {}).get(Framework._C, Framework._H)
     }
 
@@ -236,7 +236,7 @@ data class RespAppListInfo(val tips: String, val appName: String, val downloadCo
                            val packageName: String, val size: Int, val sn: Int, val appId: Int, val downloadUrl: String,
                            val calls: RespAppListCallUrls?)
 
-data class RespAppListCallUrls(val showUrl: String, val startUrl: String, val completeUrl: String, val installUrl: String) : Serializable
+data class RespAppListCallUrls(val imprUrl: String, val downloadStartUrl: String, val downloadFinishUrl: String, val installFinishUrl: String) : Serializable
 
 data class RespAppInfoEntity(val adType: String, val appName: String, val commentCount: Int, val appDesc: String,
                              val appId: Int, val downloadUrl: String, val iconUrl: String, val imageUrls: Array<String>,

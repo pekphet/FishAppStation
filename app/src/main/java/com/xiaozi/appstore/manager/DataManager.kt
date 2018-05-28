@@ -57,7 +57,7 @@ class DataManager {
             AppDetail(appId, appName, packageName, iconUrl, Framework.Trans.Size(size), updateLog, tips, appDesc, downloadUrl, commentCount, imageUrls)
         }
 
-        fun urlCallsTrans(data: RespAppListCallUrls?) = if (data == null) null else UrlCalls(data.showUrl, data.startUrl, data.completeUrl, data.installUrl)
+        fun urlCallsTrans(data: RespAppListCallUrls?) = if (data == null) null else UrlCalls(data.imprUrl, data.downloadStartUrl, data.downloadFinishUrl, data.installFinishUrl)
     }
 
     data class Banner(val img: String, val link: String)

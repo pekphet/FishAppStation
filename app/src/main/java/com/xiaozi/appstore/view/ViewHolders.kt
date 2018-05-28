@@ -229,3 +229,27 @@ class RecyclerDividerDecor(private val ctx: Context, private val dividerSize: In
 
 
 
+class HomeGridVH(val v: View) : RecyclerView.ViewHolder(v) {
+    constructor(parent: ViewGroup?) : this(LayoutInflater.from(parent?.context).inflate(R.layout.i_fhome_grid, parent, false))
+
+    val mTvName = v.findViewById<TextView>(R.id.tv_ifhome_grid_name)
+    val mImgIcon = v.findViewById<ImageView>(R.id.img_ifhome_grid_icon)
+    val mDL = v.findViewById<FDownloadBar>(R.id.fdownloader_ifhome_grid)
+
+    fun load(app: DataManager.AppInfo) {
+        mTvName.text = app.name
+        ImageLoaderHelper.loadImageWithCache(app.icon, mImgIcon)
+        v.setOnClickListener { AppActivity.open(v.context, app.appId, app.calls) }
+        mDL.run {
+            mOnStart = {NetManager.fastCall<String>(app.calls?.startUrl)}
+            mOnComplete = {NetManager.fastCall<String>(app.calls?.completeUrl)}
+            bindTag(app.pkg)
+            putInfo(app.name, app.dlUrl, app.sizeInt)
+
+        }
+    }
+
+    fun release() {
+        mDL.release()
+    }
+}
