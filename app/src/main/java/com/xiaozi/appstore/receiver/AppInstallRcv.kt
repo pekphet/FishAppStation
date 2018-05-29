@@ -6,6 +6,7 @@ import android.content.Intent
 import com.xiaozi.appstore.component.Framework
 import com.xiaozi.appstore.component.GlobalData
 import com.xiaozi.appstore.manager.NetManager
+import com.xiaozi.appstore.manager.OBManager
 
 /**
  * Created by fish on 18-1-5.
@@ -16,6 +17,7 @@ class AppInstallRcv : BroadcastReceiver(){
             val appPackageName = intent.dataString?.split(":")?.get(1)?.trim()
             if (appPackageName != null) {
                 Framework.Package.addInstalled(appPackageName)
+                OBManager.INSTALL_CALLBACK_OBB.notifyObs(appPackageName)
                 NetManager.callInstalledUpload(appPackageName)
                 NetManager.fastCall<String>(GlobalData.getCalls(appPackageName)?.install)
             }

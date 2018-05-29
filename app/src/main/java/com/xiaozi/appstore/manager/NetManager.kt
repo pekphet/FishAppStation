@@ -101,7 +101,7 @@ object NetManager {
     }
 
     fun loadAssociateApps(appId: String, success: RespAppList.() -> Unit, failed: String.() -> Unit) {
-        createBase<RespAppList>("$MAIN_URL/app/list", success, failed)
+        createBase<RespAppList>("$MAIN_URL/app/wdjlist", success, failed)
                 .Method(RequestHelper.Method.GET)
                 .UrlParam("associatedAppId", appId)
                 .UrlParam("condition", "associate")
@@ -234,11 +234,11 @@ data class RespClassSec(val id: Int, val name: String)
 data class RespAppListEntity(val node: Array<RespAppListInfo>, val number: Int, val start: Int)
 data class RespAppListInfo(val tips: String, val appName: String, val downloadCount: Long, val iconUrl: String,
                            val packageName: String, val size: Int, val sn: Int, val appId: Int, val downloadUrl: String,
-                           val calls: RespAppListCallUrls?)
+                           val imprUrl: String?, val downloadStartUrl: String?, val downloadFinishUrl: String?, val installFinishUrl: String?)
 
-data class RespAppListCallUrls(val imprUrl: String, val downloadStartUrl: String, val downloadFinishUrl: String, val installFinishUrl: String) : Serializable
+data class RespAppListCallUrlsDEP(val imprUrl: String, val downloadStartUrl: String, val downloadFinishUrl: String, val installFinishUrl: String) : Serializable
 
-data class RespAppInfoEntity(val adType: String, val appName: String, val commentCount: Int, val appDesc: String,
+data class RespAppInfoEntity(val adType: Int, val appName: String, val commentCount: Int, val appDesc: String,
                              val appId: Int, val downloadUrl: String, val iconUrl: String, val imageUrls: Array<String>,
                              val packageName: String, val point: Int, val size: Int, val tips: String, val updateLog: String)
 

@@ -1,7 +1,6 @@
 package com.xiaozi.appstore.manager
 
 import com.xiaozi.appstore.component.Framework
-import com.xiaozi.appstore.manager.DataManager.Transor.urlCallsTrans
 import java.io.Serializable
 
 /**
@@ -28,7 +27,8 @@ class DataManager {
         fun getAppInfo(pkg: String) = RamStorage.appInfoMap[pkg]
 
         fun trans(data: RespAppListInfo) = data.run {
-            AppInfo(appId, packageName, appName, iconUrl, downloadCount, Framework.Trans.Size(size), size, tips, downloadUrl, urlCallsTrans(calls))
+            AppInfo(appId, packageName, appName, iconUrl, downloadCount, Framework.Trans.Size(size), size, tips, downloadUrl, UrlCalls(imprUrl
+                    ?: "", downloadStartUrl ?: "", downloadFinishUrl ?: "", installFinishUrl ?: ""))
         }
     }
 
@@ -57,7 +57,7 @@ class DataManager {
             AppDetail(appId, appName, packageName, iconUrl, Framework.Trans.Size(size), updateLog, tips, appDesc, downloadUrl, commentCount, imageUrls)
         }
 
-        fun urlCallsTrans(data: RespAppListCallUrls?) = if (data == null) null else UrlCalls(data.imprUrl, data.downloadStartUrl, data.downloadFinishUrl, data.installFinishUrl)
+//        fun urlCallsTrans(data: RespAppListCallUrls?) = if (data == null) null else UrlCalls(data.imprUrl, data.downloadStartUrl, data.downloadFinishUrl, data.installFinishUrl)
     }
 
     data class Banner(val img: String, val link: String)

@@ -7,4 +7,5 @@ import com.xiaozi.appstore.plugin.ForceObb
  */
 object OBManager {
     val HOME_LIST_OBB = ForceObb<Array<DataManager.AppInfo>>()
+    val INSTALL_CALLBACK_OBB = ForceObb<String>()
 }

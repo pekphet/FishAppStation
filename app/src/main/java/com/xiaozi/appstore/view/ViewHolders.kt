@@ -14,6 +14,7 @@ import android.widget.TextView
 import com.fish.fishdownloader.service.DownloadRecInfo
 import com.fish.fishdownloader.view.FDownloadBar
 import com.nostra13.universalimageloader.core.ImageLoader
+import com.tencent.mm.opensdk.utils.Log
 import com.xiaozi.appstore.*
 import com.xiaozi.appstore.activity.AppActivity
 import com.xiaozi.appstore.activity.AppListActivity
@@ -25,6 +26,7 @@ import com.xiaozi.appstore.manager.AppListType
 import com.xiaozi.appstore.manager.DataManager
 import com.xiaozi.appstore.manager.NetManager
 import com.xiaozi.appstore.plugin.ImageLoaderHelper
+import com.xiaozi.appstore.plugin.ZLogE
 
 /**
  * Created by fish on 18-1-5.
@@ -48,8 +50,12 @@ class HomeVH(val v: View) : RecyclerView.ViewHolder(v) {
         mDL.run {
             bindTag(app.pkg)
             putInfo(app.name, app.dlUrl, app.sizeInt)
-            mOnStart = {NetManager.fastCall<String>(app.calls?.startUrl)}
-            mOnComplete = {NetManager.fastCall<String>(app.calls?.completeUrl)}
+            mOnStart.ck = { NetManager.fastCall<String>(app.calls?.startUrl) }
+            mOnComplete.ck = {
+                Log.e("called HOMEVH", "complete")
+                NetManager.fastCall<String>(app.calls?.completeUrl)
+                GlobalData.putCalls(app.pkg, app.calls)
+            }
         }
     }
 
@@ -79,10 +85,14 @@ class TypedAppListVH(val v: View) : RecyclerView.ViewHolder(v) {
         NetManager.fastCall<String>(app.calls?.showUrl)
         v.setOnClickListener { AppActivity.open(v.context, app.appId, app.calls) }
         mDL.run {
-            mOnStart = {NetManager.fastCall<String>(app.calls?.startUrl)}
-            mOnComplete = {NetManager.fastCall<String>(app.calls?.completeUrl)}
             bindTag(app.pkg)
             putInfo(app.name, app.dlUrl, app.sizeInt)
+            mOnStart.ck = { NetManager.fastCall<String>(app.calls?.startUrl) }
+            mOnComplete.ck = {
+                Log.e("called typed applist", "complete")
+                NetManager.fastCall<String>(app.calls?.completeUrl)
+                GlobalData.putCalls(app.pkg, app.calls)
+            }
         }
     }
 
@@ -186,7 +196,7 @@ class DownloadingVH(private val v: View) : RecyclerView.ViewHolder(v) {
                     }
                     }/s"
             }
-            mDownloader.mOnComplete = {
+            mDownloader.mOnComplete.ck = {
                 Call(1000) {
                     DownloadMgrActivity.obb.notifyObs()
                 }
@@ -228,7 +238,6 @@ class RecyclerDividerDecor(private val ctx: Context, private val dividerSize: In
 }
 
 
-
 class HomeGridVH(val v: View) : RecyclerView.ViewHolder(v) {
     constructor(parent: ViewGroup?) : this(LayoutInflater.from(parent?.context).inflate(R.layout.i_fhome_grid, parent, false))
 
@@ -239,13 +248,19 @@ class HomeGridVH(val v: View) : RecyclerView.ViewHolder(v) {
     fun load(app: DataManager.AppInfo) {
         mTvName.text = app.name
         ImageLoaderHelper.loadImageWithCache(app.icon, mImgIcon)
+        NetManager.fastCall<String>(app.calls?.showUrl)
         v.setOnClickListener { AppActivity.open(v.context, app.appId, app.calls) }
         mDL.run {
-            mOnStart = {NetManager.fastCall<String>(app.calls?.startUrl)}
-            mOnComplete = {NetManager.fastCall<String>(app.calls?.completeUrl)}
             bindTag(app.pkg)
             putInfo(app.name, app.dlUrl, app.sizeInt)
-
+            mOnStart.ck = {
+                NetManager.fastCall<String>(app.calls?.startUrl)
+            }
+            mOnComplete.ck = {
+                Log.e("called HOMEGRID", "complete")
+                NetManager.fastCall<String>(app.calls?.completeUrl)
+                GlobalData.putCalls(app.pkg, app.calls)
+            }
         }
     }
 

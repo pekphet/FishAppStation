@@ -43,16 +43,23 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
     lateinit var mServiceStub: IFDownloadAction
     val mActionTv by bid<TextView>(R.id.tv_dlbar_pg)
     val mProgress by bid<FrameLayout>(R.id.fl_dlbar_progress)
-    private var mStatus: DownloadStatus = DownloadStatus.IDLE
+
+    /**
+     *  fix to private later!!
+     */
+    var mStatus: DownloadStatus = DownloadStatus.IDLE
         set(value) {
             if (field != value) {
                 field = value
                 flushUI()
             }
         }
-    var mOnStart: () -> Unit = {}
+    var mOnStart = Callback<Any?>{}
     var mOnProgress: (Double) -> Unit = {}
-    var mOnComplete: (String) -> Unit = {}
+    var mOnComplete = Callback<String>{}
+    set(value) {
+        Log.e("oncomplete", "changed")
+    }
     var mOnFailed: (String) -> Unit = {}
     var mOnCanceled: (String) -> Unit = {}
     var mOnPause: (String) -> Unit = {}
@@ -61,6 +68,7 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
     lateinit var mCK: IFDownloadCallbacks.Stub
 
 
+    data class Callback<T>(var ck: (T) -> Unit)
     inner class DefaultDownloadSVCCallback : IFDownloadCallbacks.Stub() {
         override fun basicTypes(anInt: Int, aLong: Long, aBoolean: Boolean, aFloat: Float, aDouble: Double, aString: String?) {
         }
@@ -76,7 +84,8 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
         override fun onComplete(filePath: String) {
             post {
                 progressUI(0.0)
-                mOnComplete(filePath)
+                Log.e("download bar complete", filePath)
+                mOnComplete.ck(filePath)
 //                installApp(ctx, filePath)
                 mStatus = DownloadStatus.COMPLETE
             }
@@ -112,7 +121,7 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
         mStatus = DownloadStatus.IDLE
         progressUI(0.0)
         mOnProgress = {}
-        mOnComplete = {}
+//        mOnComplete = {}
         mOnFailed = {}
         mOnCanceled = {}
         mOnPause = {}
@@ -137,7 +146,7 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
             mInfoDelay = null
             mStatus = DownloadStatus.IDLE
             mOnProgress = {}
-            mOnComplete = {}
+//            mOnComplete = {}
             mOnFailed = {}
             mOnCanceled = {}
             mOnPause = {}
@@ -214,7 +223,7 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
         }
         mStatus = DownloadStatus.DOWNLOADING
         mServiceStub.startDownload(mTag)
-        mOnStart()
+        mOnStart.ck(null)
     }
 
     private fun pause() {
@@ -277,7 +286,7 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
 
 
     /****others****/
-    private enum class DownloadStatus {
+    enum class DownloadStatus {
         IDLE,
         DOWNLOADING,
         COMPLETE,

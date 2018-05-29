@@ -1,5 +1,6 @@
 package com.xiaozi.appstore
 
+import android.os.Message
 import com.google.gson.Gson
 import org.junit.Test
 
@@ -14,7 +15,7 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         val b = true
-
+        Message.obtain()
     }
 }
 

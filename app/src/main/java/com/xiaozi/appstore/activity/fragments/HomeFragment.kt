@@ -18,8 +18,11 @@ import com.jude.rollviewpager.adapter.StaticPagerAdapter
 import com.xiaozi.appstore.R
 import com.xiaozi.appstore.activity.SearchActivity
 import com.xiaozi.appstore.activity.WebActivity
+import com.xiaozi.appstore.component.GlobalData
 import com.xiaozi.appstore.manager.*
+import com.xiaozi.appstore.plugin.ForceObb
 import com.xiaozi.appstore.plugin.ImageLoaderHelper
+import com.xiaozi.appstore.plugin.TypedOB
 import com.xiaozi.appstore.safety
 import com.xiaozi.appstore.safetySelf
 import com.xiaozi.appstore.view.AsyncWaiter
@@ -43,6 +46,13 @@ class HomeFragment : BaseFragment() {
     lateinit var mBannerLoader: IDataPresenter
     lateinit var mWaiter: AsyncWaiter
     val mData: MutableList<DataManager.AppInfo> = mutableListOf()
+    val mOB = object : TypedOB<String> {
+        override fun update(o: ForceObb<String>, arg: String?) {
+            safety {
+                mAdapter.notifyDataSetChanged()
+            }
+        }
+    }
 
     override fun initView(inflater: LayoutInflater) = inflater.inflate(R.layout.f_home, null).safetySelf {
         mTvTabApp = findViewById(R.id.tv_fhome_tab_app)
@@ -57,6 +67,7 @@ class HomeFragment : BaseFragment() {
         initDataLoader()
         checkTab(0)
         initEffects()
+        OBManager.INSTALL_CALLBACK_OBB.addObserver(mOB, false)
     }
 
     private fun initDataLoader() {
@@ -144,5 +155,10 @@ class HomeFragment : BaseFragment() {
     override fun onSelected() {
         super.onSelected()
         mAdapter.notifyDataSetChanged()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        OBManager.INSTALL_CALLBACK_OBB.deleteObserver(mOB)
     }
 }

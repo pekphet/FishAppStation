@@ -9,12 +9,13 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.xiaozi.appstore.R
-import com.xiaozi.appstore.ZToast
-import com.xiaozi.appstore.dp2px
+import com.fish.fishdownloader.view.FDownloadBar
+import com.xiaozi.appstore.*
+import com.xiaozi.appstore.component.GlobalData
 import com.xiaozi.appstore.manager.*
+import com.xiaozi.appstore.plugin.ForceObb
 import com.xiaozi.appstore.plugin.ImageLoaderHelper
-import com.xiaozi.appstore.safetyNullable
+import com.xiaozi.appstore.plugin.TypedOB
 import com.xiaozi.appstore.view.AsyncWaiter
 import com.xiaozi.appstore.view.HomeVH
 import com.xiaozi.appstore.view.ImageVH
@@ -37,6 +38,17 @@ class AppActivity : BaseBarActivity() {
     lateinit var mAdAdapter: RecyclerView.Adapter<HomeVH>
     var mCalls: DataManager.UrlCalls? = null
 
+    val mOB = object : TypedOB<String> {
+        override fun update(o: ForceObb<String>, arg: String?) {
+            safety {
+                if (mData.pkg == arg) {
+                    dlbar_iapp.mStatus = FDownloadBar.DownloadStatus.INSTALL_CHK
+                }
+            }
+        }
+
+    }
+
     companion object {
         val KEY_APPID = "appID"
         val KEY_APPCALLS = "appCalls"
@@ -52,6 +64,7 @@ class AppActivity : BaseBarActivity() {
         super.onCreate(savedInstanceState)
         initLoader()
         mLoader.load()
+        OBManager.INSTALL_CALLBACK_OBB.addObserver(mOB)
     }
 
     private fun initLoader() {
@@ -60,6 +73,16 @@ class AppActivity : BaseBarActivity() {
         NetManager.fastCall<String>(mCalls?.showUrl)
         mLoader = AppDetailPresenterImpl(mWaiter, getAppId()) { mData = it; initView() }
         mAdsLoader = AppAdListPresenterImpl(mWaiter, getAppId()) { mAdData.addAll(it); mAdAdapter.notifyDataSetChanged() }
+        dlbar_iapp.run {
+            mOnStart.ck = {
+                NetManager.fastCall<String>(mCalls?.startUrl)
+            }
+            mOnComplete.ck = {
+                Log.e("called HOMEGRID", "complete")
+                NetManager.fastCall<String>(mCalls?.completeUrl)
+                GlobalData.putCalls(mData.pkg, mCalls)
+            }
+        }
     }
 
     private fun getAppId() = intent.getIntExtra(KEY_APPID, -1).apply {
@@ -118,7 +141,7 @@ class AppActivity : BaseBarActivity() {
             }
         }
         rv_app.run {
-            layoutManager = LinearLayoutManager(this@AppActivity, LinearLayoutManager.HORIZONTAL,false)
+            layoutManager = LinearLayoutManager(this@AppActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = mAdapter
             addItemDecoration(RecyclerDividerDecor(this@AppActivity, 4))
         }
@@ -132,6 +155,7 @@ class AppActivity : BaseBarActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        OBManager.INSTALL_CALLBACK_OBB.deleteObserver(mOB)
 //        dlbar_iapp.release()
     }
 

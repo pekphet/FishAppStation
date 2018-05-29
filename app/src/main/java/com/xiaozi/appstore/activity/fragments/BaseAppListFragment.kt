@@ -113,7 +113,7 @@ sealed class BaseAppListFragment : BaseFragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = mAdapter
         }
-        mSwiper.onSwipe({}) {
+        mSwiper.onSwipe({ mListLoader.load() }) {
             mListLoader.load(index = mData.size)
         }
     }

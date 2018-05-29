@@ -13,13 +13,15 @@ import com.xiaozi.appstore.component.Framework.Math.limitL
 import com.xiaozi.appstore.Call
 import com.xiaozi.appstore.safety
 import com.xiaozi.appstore.safetySelf
+import java.lang.ref.WeakReference
 
 /**
  * Created by fish on 18-1-4.
  */
 object Dialogs {
     fun create(ctx: Context, layoutID: Int): Dialog {
-        return Dialog(ctx, R.style.app_dialog).apply {
+        val wCtx: WeakReference<Context> = WeakReference(ctx)
+        return Dialog(wCtx.get(), R.style.app_dialog).apply {
             setCancelable(false)
             setCanceledOnTouchOutside(false)
             setContentView(layoutID)
@@ -27,7 +29,8 @@ object Dialogs {
     }
 
     fun createWaiter(ctx: Context, cancelable: Boolean = false): Dialog {
-        return Dialog(ctx, R.style.staticDialog).apply {
+        val wCtx: WeakReference<Context> = WeakReference(ctx)
+        return Dialog(wCtx.get(), R.style.staticDialog).apply {
             setContentView(R.layout.d_waiter)
             setCanceledOnTouchOutside(cancelable)
             setCancelable(cancelable)
@@ -47,7 +50,7 @@ class AsyncWaiter(val activity: Activity) {
         isWaiting = true
     }
 
-    fun showHidden(){
+    fun showHidden() {
         isWaiting = true
     }
 

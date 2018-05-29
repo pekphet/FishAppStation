@@ -10,9 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.fish.fishdownloader.service.CrossProcessDownloadDataManager
 import com.xiaozi.appstore.R
-import com.xiaozi.appstore.manager.AppListDataPresenterImpl
-import com.xiaozi.appstore.manager.DataManager
-import com.xiaozi.appstore.manager.INetAppsPresenter
+import com.xiaozi.appstore.component.GlobalData
+import com.xiaozi.appstore.manager.*
+import com.xiaozi.appstore.plugin.ForceObb
+import com.xiaozi.appstore.plugin.TypedOB
 import com.xiaozi.appstore.safety
 import com.xiaozi.appstore.view.AsyncWaiter
 import com.xiaozi.appstore.view.TypedAppListVH
@@ -44,6 +45,16 @@ class AppListActivity : BaseBarActivity() {
     lateinit var mLoader: INetAppsPresenter
     lateinit var mWaiter: AsyncWaiter
     lateinit var mAdapter: RecyclerView.Adapter<TypedAppListVH>
+
+    val mOB = object : TypedOB<String> {
+        override fun update(o: ForceObb<String>, arg: String?) {
+            safety {
+                mAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mWaiter = AsyncWaiter(this)
@@ -51,10 +62,11 @@ class AppListActivity : BaseBarActivity() {
         initRV()
         initLoader()
         mLoader.load()
+        OBManager.INSTALL_CALLBACK_OBB.addObserver(mOB, false)
     }
 
     private fun initRV() {
-        swipe_applist.onSwipe({}) { mLoader.load(false, mData.size) }
+        swipe_applist.onSwipe({ mLoader.load() }) { mLoader.load(false, mData.size) }
         mAdapter = object : RecyclerView.Adapter<TypedAppListVH>() {
             override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) = TypedAppListVH(parent)
 
@@ -94,4 +106,8 @@ class AppListActivity : BaseBarActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        OBManager.INSTALL_CALLBACK_OBB.deleteObserver(mOB)
+    }
 }
