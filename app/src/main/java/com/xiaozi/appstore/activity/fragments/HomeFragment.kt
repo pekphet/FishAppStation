@@ -41,6 +41,7 @@ class HomeFragment : BaseFragment() {
     lateinit var mRPV: RollPagerView
     lateinit var mRV: RecyclerView
     lateinit var mFLSearch: FrameLayout
+
     lateinit var mAppLoader: INetAppsPresenter
     lateinit var mGameLoader: INetAppsPresenter
     lateinit var mBannerLoader: IDataPresenter
