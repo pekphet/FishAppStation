@@ -42,9 +42,7 @@ open class CommentListPresenterImpl(private val waiter: AsyncWaiter, private val
             arrayOf<DataManager.Comment>().onLoaded(index != 0)
             waiter.hide(200)
         }
-
     }
-
 }
 
 open class AppDetailPresenterImpl(private val mWaiter: AsyncWaiter, private val appId: Int, private val onLoaded: (data: DataManager.AppDetail) -> Unit) : IDataPresenter {

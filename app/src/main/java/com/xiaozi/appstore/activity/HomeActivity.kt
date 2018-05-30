@@ -114,6 +114,9 @@ class HomeActivity : BaseFragmentActivity() {
         item.safety { findViewById<ImageView>(R.id.home_page_bottom_image).setImageResource(if (isChecked) BOTTOM_ICONS_CHECKED[position] else BOTTOM_ICONS_UNCHECKED[position]) }
     }
 
+    /**
+     * Quit the application
+     */
     override fun onBackPressed() {
         if (System.currentTimeMillis() - mLastClick < 2000) {
             val homeIntent = Intent(Intent.ACTION_MAIN)

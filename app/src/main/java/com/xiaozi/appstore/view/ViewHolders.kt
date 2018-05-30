@@ -240,6 +240,9 @@ class RecyclerDividerDecor(private val ctx: Context, private val dividerSize: In
 }
 
 
+/**
+ * RecycleView ViewHolder Class
+ */
 class HomeGridVH(val v: View) : RecyclerView.ViewHolder(v) {
     constructor(parent: ViewGroup?) : this(LayoutInflater.from(parent?.context).inflate(R.layout.i_fhome_grid, parent, false))
 

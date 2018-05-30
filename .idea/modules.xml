@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FishDownloader/FishDownloader.iml" filepath="$PROJECT_DIR$/FishDownloader/FishDownloader.iml" />
       <module fileurl="file://$PROJECT_DIR$/FishHttp/FishHttp.iml" filepath="$PROJECT_DIR$/FishHttp/FishHttp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ZYAppStore.iml" filepath="$PROJECT_DIR$/ZYAppStore.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/appstore_branches.iml" filepath="$PROJECT_DIR$/appstore_branches.iml" />
       <module fileurl="file://$PROJECT_DIR$/cld_ad/cld_ad.iml" filepath="$PROJECT_DIR$/cld_ad/cld_ad.iml" />

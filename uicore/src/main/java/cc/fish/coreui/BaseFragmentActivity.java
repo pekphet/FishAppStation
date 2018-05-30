@@ -134,10 +134,11 @@ abstract public class BaseFragmentActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        for (BaseFragment f: fragments) {
+        for (BaseFragment f : fragments) {
             try {
                 f.onActivityResume();
-            } catch(Exception ex) {}
+            } catch (Exception ex) {
+            }
         }
     }
 }

@@ -125,6 +125,7 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
         mOnFailed = {}
         mOnCanceled = {}
         mOnPause = {}
+
         mTag = tag
         initStatusBySP(mTag)
         initConnect()
