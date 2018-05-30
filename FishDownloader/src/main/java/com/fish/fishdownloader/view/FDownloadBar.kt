@@ -343,6 +343,6 @@ fun FromFileMultiApis(context: Context, f: File): Uri {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
         return Uri.fromFile(f)
     } else {
-        return FileProvider.getUriForFile(context, "com.xiaozi.appstore.provider", f).apply { Log.e("URI PARSER", this.toString()) }
+        return FileProvider.getUriForFile(context, "${context.packageName}.provider", f).apply { Log.e("URI PARSER", this.toString()) }
     }
 }
