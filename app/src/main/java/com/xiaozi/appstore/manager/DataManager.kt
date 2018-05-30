@@ -27,7 +27,7 @@ class DataManager {
         fun getAppInfo(pkg: String) = RamStorage.appInfoMap[pkg]
 
         fun trans(data: RespAppListInfo) = data.run {
-            AppInfo(appId, packageName, appName, iconUrl, downloadCount, Framework.Trans.Size(size), size, tips, downloadUrl, UrlCalls(imprUrl
+            AppInfo(appId, packageName, appName, iconUrl, downloadCount, Framework.Trans.Size(size), size, tips, downloadUrl, versionCode, UrlCalls(imprUrl
                     ?: "", downloadStartUrl ?: "", downloadFinishUrl ?: "", installFinishUrl ?: ""))
         }
     }
@@ -66,7 +66,7 @@ class DataManager {
 
     data class Category(val name: String, val icon: String, val classId: Int, val tabs: List<SecCategory>)
     data class SecCategory(val name: String, val classId: Int)
-    data class AppInfo(val appId: Int, val pkg: String, val name: String, val icon: String, val installCnt: Long, val size: String, val sizeInt: Int, val tip: String, val dlUrl: String, val calls: UrlCalls?)
+    data class AppInfo(val appId: Int, val pkg: String, val name: String, val icon: String, val installCnt: Long, val size: String, val sizeInt: Int, val tip: String, val dlUrl: String, val vCode: Int, val calls: UrlCalls?)
     data class Comment(val headIcon: String, val score: Int, val name: String, val time: String, val content: String, var count: Int, var isAgreed: Int, val id: Int)
     data class UrlCalls(val showUrl: String, val startUrl: String, val completeUrl: String, val install: String) : Serializable
 }

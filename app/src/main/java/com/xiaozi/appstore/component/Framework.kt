@@ -28,35 +28,36 @@ class Framework {
             ex.printStackTrace()
         }
 
-        fun installApp(f: File) =try {
-                    _C.startActivity(Intent(Intent.ACTION_VIEW).run {
-                        setDataAndType(FromFileMultiApis(_C, f), "application/vnd.android.package-archive")
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    })
-                } catch (ex: Exception) {
-                    ex.printStackTrace()
-                }
+        fun installApp(f: File) = try {
+            _C.startActivity(Intent(Intent.ACTION_VIEW).run {
+                setDataAndType(FromFileMultiApis(_C, f), "application/vnd.android.package-archive")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            })
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
     }
 
     object Package {
-        private val installedPkgs = mutableSetOf<String>()
+        private val installedPkgs = mutableMapOf<String, Int>()
         @Synchronized
-        fun installed(force: Boolean = false): List<String> {
+        fun installed(force: Boolean = false): Map<String, Int> {
             if (force || installedPkgs.isEmpty()) {
                 installedPkgs.clear()
-                installedPkgs.addAll(mContext!!.packageManager.getInstalledPackages(PackageManager.MATCH_UNINSTALLED_PACKAGES)
-                        .filter { it != null }.map { it.packageName })
+                installedPkgs.putAll(mContext!!.packageManager.getInstalledPackages(PackageManager.MATCH_UNINSTALLED_PACKAGES)
+                        .filter { it != null }.associate { Pair<String, Int>(it.packageName, it.versionCode) })
             }
-            return installedPkgs.toList()
+            return installedPkgs
         }
 
         fun addInstalled(pkg: String) {
             if (installedPkgs.isEmpty()) {
                 installed()
             }
-            installedPkgs.add(pkg)
+            installedPkgs.put(pkg, Framework._C.packageManager.getPackageInfo(pkg, PackageManager.MATCH_UNINSTALLED_PACKAGES)?.versionCode
+                    ?: Int.MAX_VALUE)
         }
 
         fun removeInstalled(pkg: String) {
@@ -66,7 +67,13 @@ class Framework {
             installedPkgs.remove(pkg)
         }
 
-        fun isInstalled(pkg: String) = pkg in installedPkgs
+        fun checkInstalled(pkg: String, getVersion: Int) {
+            val i = installedPkgs[pkg]
+            if (i != null && i < getVersion)
+                installedPkgs[pkg] = 0
+        }
+
+        fun isInstalled(pkg: String) = pkg in installedPkgs.keys
 
     }
 

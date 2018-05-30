@@ -54,12 +54,12 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
                 flushUI()
             }
         }
-    var mOnStart = Callback<Any?>{}
+    var mOnStart = Callback<Any?> {}
     var mOnProgress: (Double) -> Unit = {}
-    var mOnComplete = Callback<String>{}
-    set(value) {
-        Log.e("oncomplete", "changed")
-    }
+    var mOnComplete = Callback<String> {}
+        set(value) {
+            Log.e("oncomplete", "changed")
+        }
     var mOnFailed: (String) -> Unit = {}
     var mOnCanceled: (String) -> Unit = {}
     var mOnPause: (String) -> Unit = {}
@@ -246,6 +246,10 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
                     mActionTv.text = "下载"
                     onceClick(this@FDownloadBar::download)
                 }
+                DownloadStatus.UPDATE -> {
+                    mActionTv.text = "升级"
+                    onceClick(this@FDownloadBar::download)
+                }
                 DownloadStatus.DOWNLOADING -> {
                     mActionTv.text = "下载中"
                     onceClick(this@FDownloadBar::pause)
@@ -264,20 +268,31 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
                     mActionTv.text = "失败"
                 }
                 DownloadStatus.INSTALL_CHK -> {
-                    if (CrossProcessDownloadDataManager.isInstalled(mTag)) {
-                        mActionTv.text = "打开"
-                        setOnClickListener { open() }
-                    } else {
-                        if (CrossProcessDownloadDataManager.getInfo(ctx, mTag)?.filePath?.run { File(this).exists() } == true) {
-                            mActionTv.text = "安装"
-                            onceClick {
-                                mStatus = DownloadStatus.COMPLETE
-                                installApp(ctx, CrossProcessDownloadDataManager.getInfo(ctx, mTag)?.filePath
-                                        ?: return@onceClick)
+                    val versionStatus = CrossProcessDownloadDataManager.getPackageVersionCode(mTag)
+                    when (versionStatus) {
+                        0, -1 -> {  //0:update enabled, 1: not installed
+                            if (CrossProcessDownloadDataManager.getInfo(ctx, mTag)?.filePath?.run { File(this).exists() } == true) {
+                                mActionTv.text = "安装"
+                                onceClick {
+                                    mStatus = DownloadStatus.COMPLETE
+                                    installApp(ctx, CrossProcessDownloadDataManager.getInfo(ctx, mTag)?.filePath
+                                            ?: return@onceClick)
+                                }
+                            } else {
+                                mStatus = if (0 == versionStatus) DownloadStatus.UPDATE else DownloadStatus.IDLE
                             }
-                        } else {
-                            mStatus = DownloadStatus.IDLE
+
                         }
+                        else -> {
+                            mActionTv.text = "打开"
+                            setOnClickListener { open() }
+                        }
+                    }
+
+                    if (CrossProcessDownloadDataManager.isInstalled(mTag)) {
+
+                    } else {
+
                     }
                 }
             }
@@ -288,6 +303,7 @@ class FDownloadBar(val ctx: Context, val attrs: AttributeSet?) : FrameLayout(ctx
     /****others****/
     enum class DownloadStatus {
         IDLE,
+        UPDATE,
         DOWNLOADING,
         COMPLETE,
         PAUSE,
@@ -322,7 +338,7 @@ fun installApp(ctx: Context, filePath: String) = try {
     ex.printStackTrace()
 }
 
-fun FromFileMultiApis(context: Context, f: File): Uri{
+fun FromFileMultiApis(context: Context, f: File): Uri {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
         return Uri.fromFile(f)
     } else {

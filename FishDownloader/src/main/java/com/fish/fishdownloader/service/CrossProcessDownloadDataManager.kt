@@ -28,7 +28,7 @@ object CrossProcessDownloadDataManager {
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
                 Log.e("remote service", "connected")
                 mServiceStub = IFDownloadAction.Stub.asInterface(service)
-                mServiceStub.registerCK("control", object : IFDownloadCallbacks.Stub(){
+                mServiceStub.registerCK("control", object : IFDownloadCallbacks.Stub() {
                     override fun basicTypes(anInt: Int, aLong: Long, aBoolean: Boolean, aFloat: Float, aDouble: Double, aString: String?) {
                     }
 
@@ -51,14 +51,17 @@ object CrossProcessDownloadDataManager {
         }
         context.applicationContext.bindService(Intent(context.applicationContext, FishDownloaderSVC::class.java), mConnection, Service.BIND_AUTO_CREATE)
     }
+
     fun getAllInfo(ctx: Context): List<DownloadRecInfo> {
         if (!this::mServiceStub.isInitialized) return listOf()
-        return FishDownloaderSVC.GSON.fromJson(mServiceStub.getAbsFilePath("all"), object : TypeToken<List<DownloadRecInfo>>(){}.type)
+        return FishDownloaderSVC.GSON.fromJson(mServiceStub.getAbsFilePath("all"), object : TypeToken<List<DownloadRecInfo>>() {}.type)
     }
+
     fun getInfo(ctx: Context, pkg: String): DownloadRecInfo? {
         if (!this::mServiceStub.isInitialized) return null
         return FishDownloaderSVC.GSON.fromJson(mServiceStub.getAbsFilePath(pkg), DownloadRecInfo::class.java)
     }
+
     fun hasTag(pkg: String) = mServiceStub.hasTag(pkg)
 
     fun clearCKS() = if (this::mServiceStub.isInitialized) {
@@ -67,13 +70,16 @@ object CrossProcessDownloadDataManager {
 
     }
 
-    lateinit var mInstallCK : () -> List<String>
-    lateinit var mSupportNet : () -> Boolean
-    fun installInfoCK(ck: () -> List<String>) {
+    lateinit var mInstallCK: () -> Map<String, Int>
+    lateinit var mSupportNet: () -> Boolean
+    fun installInfoCK(ck: () -> Map<String, Int>) {
         mInstallCK = ck
     }
+
     fun netSupportCK(ck: () -> Boolean) {
         mSupportNet = ck
     }
-    fun isInstalled(pkg: String) = pkg in mInstallCK()
+
+    fun isInstalled(pkg: String) = pkg in mInstallCK().keys
+    fun getPackageVersionCode(pkg: String) = mInstallCK()[pkg] ?: -1
 }

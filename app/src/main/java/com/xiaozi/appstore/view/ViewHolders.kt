@@ -47,6 +47,7 @@ class HomeVH(val v: View) : RecyclerView.ViewHolder(v) {
         NetManager.fastCall<String>(app.calls?.showUrl)
         ImageLoaderHelper.loadImageWithCache(app.icon, mImgIcon)
         v.setOnClickListener { AppActivity.open(v.context, app.appId, app.calls) }
+        Framework.Package.checkInstalled(app.pkg, app.vCode)
         mDL.run {
             bindTag(app.pkg)
             putInfo(app.name, app.dlUrl, app.sizeInt)
@@ -84,6 +85,7 @@ class TypedAppListVH(val v: View) : RecyclerView.ViewHolder(v) {
         ImageLoaderHelper.loadImageWithCache(app.icon, mImgIcon)
         NetManager.fastCall<String>(app.calls?.showUrl)
         v.setOnClickListener { AppActivity.open(v.context, app.appId, app.calls) }
+        Framework.Package.checkInstalled(app.pkg, app.vCode)
         mDL.run {
             bindTag(app.pkg)
             putInfo(app.name, app.dlUrl, app.sizeInt)
@@ -250,6 +252,7 @@ class HomeGridVH(val v: View) : RecyclerView.ViewHolder(v) {
         ImageLoaderHelper.loadImageWithCache(app.icon, mImgIcon)
         NetManager.fastCall<String>(app.calls?.showUrl)
         v.setOnClickListener { AppActivity.open(v.context, app.appId, app.calls) }
+        Framework.Package.checkInstalled(app.pkg, app.vCode)
         mDL.run {
             bindTag(app.pkg)
             putInfo(app.name, app.dlUrl, app.sizeInt)
