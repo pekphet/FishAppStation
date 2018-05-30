@@ -1,6 +1,8 @@
 package com.xiaozi.appstore.plugin
 
+import android.text.Html
 import android.util.Log
+import android.widget.TextView
 import com.google.gson.Gson
 import com.xiaozi.appstore.component.Device
 import com.xiaozi.appstore.component.Framework
@@ -9,7 +11,7 @@ import com.xiaozi.appstore.manager.ConfManager
 /**
  * Created by fish on 18-1-2.
  */
-val _DEBUG =  false
+val _DEBUG = false
 
 val _CLIENT_ID = "BK_APP_STORE"
 val _KEY = "DA23JH1238"
@@ -28,3 +30,10 @@ fun ZLogE(tag: String = "FrameZLog", msg: String) = msg.apply { if (_LOG_E) Log.
 inline fun <T, R> within(t: T, r: T.() -> R) = t.run(r)
 
 fun netSupportByWifi() = !ConfManager.isOnlyWifi() || Device.isUsingWifi(Framework._C)
+
+fun TextView.htmlableText(str: String) {
+    if ("<br" in str)
+        text = Html.fromHtml(str)
+    else
+        text = str
+}

@@ -16,6 +16,7 @@ import com.xiaozi.appstore.manager.*
 import com.xiaozi.appstore.plugin.ForceObb
 import com.xiaozi.appstore.plugin.ImageLoaderHelper
 import com.xiaozi.appstore.plugin.TypedOB
+import com.xiaozi.appstore.plugin.htmlableText
 import com.xiaozi.appstore.view.AsyncWaiter
 import com.xiaozi.appstore.view.HomeVH
 import com.xiaozi.appstore.view.ImageVH
@@ -95,8 +96,8 @@ class AppActivity : BaseBarActivity() {
         tv_iapp_name.text = mData.name
         tv_iapp_content.text = mData.tip
         tv_iapp_pos.visibility = View.GONE
-        tv_app_info.text = mData.content
-        tv_app_update_info.text = mData.updateLog
+        tv_app_info.htmlableText(mData.content)
+        tv_app_update_info.htmlableText(mData.updateLog)
         ImageLoaderHelper.loadImageWithCache(mData.icon, img_iapp_icon)
         tv_app_chat.text = "${mData.commentCnt}"
         rl_app_comment.setOnClickListener { CommentListActivity.open(this, mData.appId, mData.pkg) }

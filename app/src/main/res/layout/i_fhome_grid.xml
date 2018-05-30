@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/common_text"
         android:textColor="@color/text_dark"
+        android:maxLines="1"
         android:layout_marginTop="8dp"/>
 
     <com.fish.fishdownloader.view.FDownloadBar
