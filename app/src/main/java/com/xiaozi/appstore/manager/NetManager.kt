@@ -90,7 +90,7 @@ object NetManager {
     }
 
     fun loadAppList(type: String = AppListType.ALL.str, condition: String, keyword: String = "", index: Int = 0, success: RespAppList.() -> Unit, failed: String.() -> Unit) {
-        createBase<RespAppList>("$MAIN_URL/app/list", success, failed)
+        createBase<RespAppList>("$MAIN_URL/app/wdjlist", success, failed)
                 .Method(RequestHelper.Method.GET)
                 .UrlPassNullParam("adsType", type)
                 .UrlParam("condition", condition)

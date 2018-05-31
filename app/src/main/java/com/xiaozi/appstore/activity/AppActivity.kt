@@ -99,7 +99,9 @@ class AppActivity : BaseBarActivity() {
         tv_app_info.htmlableText(mData.content)
         tv_app_update_info.htmlableText(mData.updateLog)
         ImageLoaderHelper.loadImageWithCache(mData.icon, img_iapp_icon)
+        //如果评论的数量为0，不显示
         tv_app_chat.text = "${mData.commentCnt}"
+        rl_app_comment.visibility = if (mData.commentCnt > 0) View.VISIBLE else View.GONE
         rl_app_comment.setOnClickListener { CommentListActivity.open(this, mData.appId, mData.pkg) }
         dlbar_iapp.run {
             bindTag(mData.pkg)

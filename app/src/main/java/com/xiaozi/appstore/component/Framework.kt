@@ -67,6 +67,9 @@ class Framework {
             installedPkgs.remove(pkg)
         }
 
+        /**
+         * checking the lasted version of pkg , if the version is not the lasted new version , return 0
+         */
         fun checkInstalled(pkg: String, getVersion: Int) {
             val i = installedPkgs[pkg]
             if (i != null && i < getVersion)

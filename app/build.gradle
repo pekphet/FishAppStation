@@ -10,8 +10,8 @@ android {
         applicationId "com.qu.appstore"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 1100
-        versionName "V 1.1.0"
+        versionCode 1200
+        versionName "V 1.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resValue "string", "version_name", getVersionName()
     }
