@@ -106,6 +106,7 @@ class AppActivity : BaseBarActivity() {
         dlbar_iapp.run {
             bindTag(mData.pkg)
             putInfo(mData.name, mData.dlUrl, 100)
+
         }
         changeTitle(mData.name)
         initRV()

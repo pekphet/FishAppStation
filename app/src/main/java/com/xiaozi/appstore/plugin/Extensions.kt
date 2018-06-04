@@ -4,7 +4,9 @@ import android.content.Context
 import android.view.View
 import android.widget.Toast
 import com.fish.downloader.view.DownloadBar
+import com.fish.fishdownloader.view.FDownloadBar
 import com.xiaozi.appstore.component.Framework
+import javax.xml.transform.Source
 
 /**
  * Created by fish on 18-1-2.
@@ -54,29 +56,3 @@ fun <T> Iterable<T>.forkList(predicate: T.() -> Boolean, result: (resultTrue: Li
 }
 
 fun <T> Collection<T>.containsBy(data: Any, predicate: T.() -> Any?): Boolean = this.filter { data == predicate }.map { it != null }.isNotEmpty()
-
-
-fun DownloadBar.initDownload(pkg: String, appName: String, url: String, fileSize: Long) {
-//    if (DownloadTagsManager.mTagsMap.containsKey(pkg)) {
-//        DownloadTagsManager.mTagsMap[pkg]!!.apply {
-//            text(text)
-//            initInfo(pkg, name, fileSize, url)
-//        }
-//        return
-//    }
-//    DownloadTagsManager.store(pkg, url, appName, fileSize)
-//    initInfo(pkg, appName, fileSize, url)
-//    init { type, data ->
-//        when (type) {
-//            DownloadBar.CK_TYPE.COMPLETE -> {
-//                DownloadTagsManager.mTagsMap[pkg]?.text = "安装中"
-//            }
-//            DownloadBar.CK_TYPE.FAILED -> {
-//                DownloadTagsManager.mTagsMap[pkg]?.text = "下载失败"
-//            }
-//            DownloadBar.CK_TYPE.CANCELED -> {
-//                DownloadTagsManager.mTagsMap[pkg]?.text = "下载"
-//            }
-//        }
-//    }
-}

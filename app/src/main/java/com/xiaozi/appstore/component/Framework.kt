@@ -47,7 +47,7 @@ class Framework {
             if (force || installedPkgs.isEmpty()) {
                 installedPkgs.clear()
                 installedPkgs.putAll(mContext!!.packageManager.getInstalledPackages(PackageManager.MATCH_UNINSTALLED_PACKAGES)
-                        .filter { it != null }.associate { Pair<String, Int>(it.packageName, it.versionCode) })
+                        .filter { it != null }.associate { Pair<String, Int>(it.packageName, Int.MAX_VALUE) })
             }
             return installedPkgs
         }
