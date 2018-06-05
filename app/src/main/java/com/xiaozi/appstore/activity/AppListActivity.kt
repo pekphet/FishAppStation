@@ -61,7 +61,7 @@ class AppListActivity : BaseBarActivity() {
         changeTitle(intent.getStringExtra(KEY_TITLE))
         initRV()
         initLoader()
-        mLoader.load()
+//        mLoader.load()
         OBManager.INSTALL_CALLBACK_OBB.addObserver(mOB, false)
     }
 
@@ -104,6 +104,11 @@ class AppListActivity : BaseBarActivity() {
                 mAdapter.notifyDataSetChanged()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mLoader.load()
     }
 
     override fun onDestroy() {

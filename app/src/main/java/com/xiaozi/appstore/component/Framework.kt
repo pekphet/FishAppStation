@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import com.fish.fishdownloader.view.FromFileMultiApis
+import com.xiaozi.appstore.plugin.ZLogE
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,7 +48,7 @@ class Framework {
             if (force || installedPkgs.isEmpty()) {
                 installedPkgs.clear()
                 installedPkgs.putAll(mContext!!.packageManager.getInstalledPackages(PackageManager.MATCH_UNINSTALLED_PACKAGES)
-                        .filter { it != null }.associate { Pair<String, Int>(it.packageName, Int.MAX_VALUE) })
+                        .filter { it != null }.associate { Pair<String, Int>(it.packageName, it.versionCode) })
             }
             return installedPkgs
         }
@@ -72,8 +73,10 @@ class Framework {
          */
         fun checkInstalled(pkg: String, getVersion: Int) {
             val i = installedPkgs[pkg]
+            ZLogE("will chk", "pkg: $pkg, getV:$getVersion, ver:${installedPkgs[pkg]}")
             if (i != null && i < getVersion)
                 installedPkgs[pkg] = 0
+            ZLogE("chked", "pkg: $pkg, getV:$getVersion, ver:${installedPkgs[pkg]}")
         }
 
         fun isInstalled(pkg: String) = pkg in installedPkgs.keys

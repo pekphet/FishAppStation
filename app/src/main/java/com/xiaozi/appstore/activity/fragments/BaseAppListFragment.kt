@@ -37,6 +37,7 @@ sealed class BaseAppListFragment : BaseFragment() {
     lateinit var mCategoryLoader: IDataPresenter
     lateinit var mWaiter: AsyncWaiter
     lateinit var mSwiper: LoadableSwipeLayout
+    var mCurrentSel = 0
     lateinit var mAdapter: RecyclerView.Adapter<TypedAppListVH>
     lateinit var mCategoryAdapter: RecyclerView.Adapter<CategoryVH>
     val mData: MutableList<DataManager.AppInfo> = mutableListOf()
@@ -119,19 +120,19 @@ sealed class BaseAppListFragment : BaseFragment() {
     }
 
     private fun initEffects() {
-        mTvChart.setOnClickListener { checkTab(0) }
-        mTvCategory.setOnClickListener { checkTab(1) }
+        mTvChart.setOnClickListener { mCurrentSel = 0;checkTab() }
+        mTvCategory.setOnClickListener { mCurrentSel = 1;checkTab() }
         mFlSearch.setOnClickListener { activity.startActivity(Intent(activity, SearchActivity::class.java)) }
     }
 
-    private fun checkTab(index: Int) {
-        mTvChart.setCompoundDrawables(null, null, null, if (index == 0) mDrawableTab else mDrawableTabWhite)
-        mTvCategory.setCompoundDrawables(null, null, null, if (index == 1) mDrawableTab else mDrawableTabWhite)
-        if (index == 0) {
+    private fun checkTab() {
+        mTvChart.setCompoundDrawables(null, null, null, if (mCurrentSel == 0) mDrawableTab else mDrawableTabWhite)
+        mTvCategory.setCompoundDrawables(null, null, null, if (mCurrentSel == 1) mDrawableTab else mDrawableTabWhite)
+        if (mCurrentSel == 0) {
             mSwiper.setSwipeAble(true)
             mRvList.adapter = mAdapter
             mAdapter.notifyDataSetChanged()
-        } else if (index == 1) {
+        } else if (mCurrentSel == 1) {
             mSwiper.setSwipeAble(false)
             mRvList.adapter = mCategoryAdapter
             mCategoryAdapter.notifyDataSetChanged()
@@ -140,7 +141,7 @@ sealed class BaseAppListFragment : BaseFragment() {
 
     override fun onActivityResume() {
         super.onActivityResume()
-        mAdapter.notifyDataSetChanged()
+        checkTab()
     }
 
     override fun onSelected() {

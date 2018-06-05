@@ -45,6 +45,7 @@ class HomeFragment : BaseFragment() {
     lateinit var mAppLoader: INetAppsPresenter
     lateinit var mGameLoader: INetAppsPresenter
     lateinit var mBannerLoader: IDataPresenter
+    var mCurrentSel = 0
     lateinit var mWaiter: AsyncWaiter
     val mData: MutableList<DataManager.AppInfo> = mutableListOf()
     val mOB = object : TypedOB<String> {
@@ -66,7 +67,7 @@ class HomeFragment : BaseFragment() {
         mRV.adapter = mAdapter
         mRV.isNestedScrollingEnabled = false
         initDataLoader()
-        checkTab(0)
+//        checkTab()
         initEffects()
         OBManager.INSTALL_CALLBACK_OBB.addObserver(mOB, false)
     }
@@ -93,6 +94,7 @@ class HomeFragment : BaseFragment() {
         mBannerLoader.load()
     }
 
+
     private fun freshRPV(banner: List<DataManager.Banner>) {
         mRPV.apply {
             setPlayDelay(3000)
@@ -111,19 +113,19 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initEffects() {
-        mTvTabApp.setOnClickListener { checkTab(0) }
-        mTvTabGame.setOnClickListener { checkTab(1) }
+        mTvTabApp.setOnClickListener { mCurrentSel = 0;checkTab() }
+        mTvTabGame.setOnClickListener { mCurrentSel = 1;checkTab() }
         mFLSearch.setOnClickListener { activity.startActivity(Intent(activity, SearchActivity::class.java)) }
     }
 
-    private fun checkTab(index: Int) {
+    private fun checkTab() {
         if (mWaiter.isWaiting)
             return
-        mTvTabApp.setCompoundDrawables(null, null, null, if (index == 0) mDrawableTab else mDrawableTabWhite)
-        mTvTabGame.setCompoundDrawables(null, null, null, if (index == 1) mDrawableTab else mDrawableTabWhite)
-        if (index == 0) {
+        mTvTabApp.setCompoundDrawables(null, null, null, if (mCurrentSel == 0) mDrawableTab else mDrawableTabWhite)
+        mTvTabGame.setCompoundDrawables(null, null, null, if (mCurrentSel == 1) mDrawableTab else mDrawableTabWhite)
+        if (mCurrentSel == 0) {
             mAppLoader.load(true)
-        } else if (index == 1) {
+        } else if (mCurrentSel == 1) {
             mGameLoader.load(true)
         }
     }
@@ -150,7 +152,7 @@ class HomeFragment : BaseFragment() {
 
     override fun onActivityResume() {
         super.onActivityResume()
-        mAdapter.notifyDataSetChanged()
+        checkTab()
     }
 
     override fun onSelected() {

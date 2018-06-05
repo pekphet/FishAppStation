@@ -21,7 +21,7 @@ val _GSON = Gson()
 
 private val _LOG_D = true
 private val _LOG_W = true
-private val _LOG_E = true
+private val _LOG_E = false
 
 fun ZLogD(tag: String = "FrameZLog", msg: String) = msg.apply { if (_LOG_D) Log.d(tag, msg) }
 fun ZLogW(tag: String = "FrameZLog", msg: String) = msg.apply { if (_LOG_W) Log.w(tag, msg) }
