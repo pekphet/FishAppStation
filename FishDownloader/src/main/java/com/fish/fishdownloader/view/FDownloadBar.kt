@@ -1,5 +1,7 @@
 package com.fish.fishdownloader.view
 
+import android.Manifest
+import android.app.Activity
 import android.app.Service
 import android.content.ComponentName
 import android.content.Context
@@ -13,6 +15,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.util.AttributeSet
 import android.util.Log
