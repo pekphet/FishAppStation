@@ -63,7 +63,6 @@ object NetManager {
 
     inline fun <reified T> createOri(url: String, crossinline success: T.() -> Unit, crossinline failed: String.() -> Unit) = RequestHelper<T?>().apply {
         Url(url)
-        UrlParam("ts", "${System.currentTimeMillis()}", true)
         ResultType(object : TypeToken<T?>() {})
         Method(RequestHelper.Method.GET)
         Success {
