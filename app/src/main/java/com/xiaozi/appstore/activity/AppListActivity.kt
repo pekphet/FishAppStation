@@ -45,11 +45,13 @@ class AppListActivity : BaseBarActivity() {
     lateinit var mLoader: INetAppsPresenter
     lateinit var mWaiter: AsyncWaiter
     lateinit var mAdapter: RecyclerView.Adapter<TypedAppListVH>
+    var isForeground = false
 
     val mOB = object : TypedOB<String> {
         override fun update(o: ForceObb<String>, arg: String?) {
             safety {
-                mAdapter.notifyDataSetChanged()
+                if (isForeground)
+                    mAdapter.notifyDataSetChanged()
             }
         }
     }
@@ -109,6 +111,12 @@ class AppListActivity : BaseBarActivity() {
     override fun onResume() {
         super.onResume()
         mLoader.load()
+        isForeground = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isForeground = false
     }
 
     override fun onDestroy() {
